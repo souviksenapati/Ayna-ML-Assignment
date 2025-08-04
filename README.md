@@ -336,7 +336,7 @@ The final trained model produces high-quality, accurate polygon fillings that cl
 | Input | Target | Prediction (with MAE) |
 | :---: | :---: | :---: |
 | ![Alt text](./static/Star_Input_Image.png "Star Input Image") | ![Alt text](./static/Star_Target_Image.png "Star Target Image") | ![Alt text](./static/Star_Prediction_Image.png "Star Prediction Image")  |
-| ![Alt text](./static/Square_Input_Image.png "Traingle Input Image") | ![Alt text](./static/Square_Target_Image.png "Traingle Target Image") | ![Alt text](./static/Square_Prediction_Image.png "Traingle Prediction Image") |
+| ![Alt text](./static/Square_Input_Image.png "Traingle Input Image") | ![Alt text](./static/Square_Target_Image.png "Traingle Target Image") | ![Alt text](./static/Square_Prediction_ Image.png "Traingle Prediction Image") |
 
 ---
 
