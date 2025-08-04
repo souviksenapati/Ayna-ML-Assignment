@@ -137,47 +137,48 @@ Total Parameters: ~31M
 
 ## 📈 Training Results
 
-### Final Training Statistics
-| Metric | Value | Epoch |
-|--------|-------|-------|
-| **Best Validation Loss** | 0.0875 | 17 |
-| **Best Color Accuracy** | 86.2% | 17 |
-| **Final Training Loss** | 0.0497 | 32 |
-| **Training Duration** | 32 epochs | ~45 minutes |
-| **Early Stopping** | Triggered | Patience: 15 |
+The model was trained for 200 epochs, achieving excellent performance and high-quality visual output. The training process involved key decisions, such as changing the loss function, which were critical to the final result.
 
-### Training Configuration
+### Final Performance Statistics
+| Metric | Value | Notes |
+|--------|-------|-------|
+| **Best Validation Loss (L1)** | **0.0071** | Achieved at Epoch 200 |
+| **Final Validation MAE** | 0.007123 | Low pixel-wise error |
+| **Final Validation PSNR** | 32.32 dB | High image quality |
+| **Total Training Epochs**| 200 | Full training run |
+
+### Final Training Configuration
 ```yaml
 Model: ConditionalUNet
 Optimizer: Adam
-Learning Rate: 1e-3 → 1e-6 (Cosine Annealing)
+Learning Rate: 5e-4
 Weight Decay: 1e-5
 Batch Size: 8
-Loss Function: ColorAwareLoss (MSE + Color-specific)
-Scheduler: CosineAnnealingLR
-Early Stopping: 15 epochs patience
+Loss Function: L1Loss
+Scheduler: ReduceLROnPlateau
+Epochs: 200
 ```
 
-### Loss Function Breakdown
-```python
-Total Loss = MSE_Loss + 0.5 × Color_Loss
+### Loss Function Rationale
 
-Where:
-- MSE_Loss: Standard pixel-wise mean squared error
-- Color_Loss: Masked MSE focusing on non-background pixels
-- Color_Weight: 0.5 (balanced importance)
-```
+The model was initially trained using Mean Squared Error (`MSELoss`), which is a common choice for image regression tasks. However, this resulted in visually blurry outputs with hazy edges.
 
-### Color Prediction Analysis
-```
-Sample Analysis (Epoch 30):
-├── Yellow (Index 1): ✅ Avg difference: 0.089
-├── Green (Index 2):  ✅ Avg difference: 0.073  
-├── Blue (Index 0):   ⚠️ Avg difference: 0.198
-├── Red (Index 3):    ✅ Avg difference: 0.095
-└── Orange (Index 4): ✅ Avg difference: 0.081
+To achieve sharper, more defined results, the loss function was changed to **`L1Loss`** (Mean Absolute Error). This change was critical for improving the perceptual quality of the generated images, as `L1Loss` is less prone to averaging out details and encourages the model to produce cleaner boundaries.
 
-Overall Color Accuracy: 85.9%
+---
+
+### Per-Color Performance Analysis
+
+The final model's performance was evaluated on a per-color basis using Mean Squared Error (MSE) on the validation set. The results show consistently low error across all colors, indicating that the model learned to generate each color accurately.
+
+| Color | Validation MSE |
+|:---|:---|
+| 🔵 **Blue** | 0.000971 |
+| 🌐 **Cyan** | 0.000332 |
+| 🟢 **Green** | 0.000512 |
+| 🟡 **Yellow** | 0.000865 |
+
+The low MSE values confirm that the color conditioning mechanism was effective and the model did not exhibit a significant bias or weakness for any particular color in the palette.
 ```
 
 ## 🚀 Installation
